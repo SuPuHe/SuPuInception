@@ -22,8 +22,10 @@ down:
 
 clean: down
 	@docker system prune -a --force
+
+fclean: clean
 	@sudo rm -rf $(DATA_PATH)
 
-re: clean all
+re: fclean all
 
-.PHONY: all setup stop down clean re
+.PHONY: all setup stop down clean fclean re
