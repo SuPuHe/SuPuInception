@@ -29,11 +29,13 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - DOMAIN_NAME=${DOMAIN_NAME}
-      - WP_ADMIN_USER=${WP_ADMIN_USER}
       - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
+      - WP_USER_EMAIL=${WP_USER_EMAIL}
+      - WP_USER_ROLE=${WP_USER_ROLE}
     secrets:
       - db_password
       - credentials
+      - user_credentials
     networks:
       - inception_network
     volumes:
@@ -64,6 +66,8 @@ secrets:
     file: ../secrets/db_root_password.txt
   credentials:
     file: ../secrets/credentials.txt
+  user_credentials:
+    file: ../secrets/user_credentials.txt
 
 networks:
   inception_network:

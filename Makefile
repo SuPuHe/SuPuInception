@@ -27,7 +27,3 @@ clean: down
 re: clean all
 
 .PHONY: all setup stop down clean re
-
-re: clean all
-
-.PHONY: all setup stop down clean re
