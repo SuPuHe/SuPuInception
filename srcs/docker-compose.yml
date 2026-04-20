@@ -42,6 +42,7 @@ services:
       - wordpress_data:/var/www/wordpress
     depends_on:
       - mariadb
+      - redis
   mariadb:
     build:
       context: ./requirements/mariadb
@@ -63,6 +64,21 @@ services:
       context: ./requirements/bonus/redis
       dockerfile: Dockerfile
     container_name: redis
+    networks:
+      - inception_network
+    restart: always
+  ftp:
+    build:
+      context: ./requirements/bonus/ftp
+      dockerfile: Dockerfile
+    container_name: ftp
+    volumes:
+      - wordpress_data:/var/www/wordpress
+    secrets:
+      - user_credentials
+    ports:
+      - "21:21"
+      - "21100-21110:21100-21110"
     networks:
       - inception_network
     restart: always
