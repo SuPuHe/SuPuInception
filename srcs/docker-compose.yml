@@ -58,6 +58,14 @@ services:
       - inception_network
     volumes:
       - mariadb_data:/var/lib/mysql
+  redis:
+    build:
+      context: ./requirements/bonus/redis
+      dockerfile: Dockerfile
+    container_name: redis
+    networks:
+      - inception_network
+    restart: always
 
 secrets:
   db_password:
