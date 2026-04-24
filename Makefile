@@ -12,6 +12,7 @@ all: setup
 setup:
 	@mkdir -p $(DATA_PATH)/mariadb
 	@mkdir -p $(DATA_PATH)/wordpress
+	@mkdir -p $(DATA_PATH)/portainer
 	@if [ ! -f ./secrets/db_password.txt ]; then echo "Error: Create ./secrets/db_password.txt"; exit 1; fi
 
 stop:

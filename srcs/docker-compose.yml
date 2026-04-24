@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   nginx:
     build:
@@ -83,6 +81,21 @@ services:
     networks:
       - inception_network
     restart: always
+  portainer:
+    build:
+      context: ./requirements/bonus/portainer
+      dockerfile: Dockerfile
+    container_name: portainer
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    secrets:
+      - portainer_pass
+    networks:
+      - inception_network
 
 secrets:
   db_password:
@@ -93,6 +106,8 @@ secrets:
     file: ../secrets/credentials.txt
   user_credentials:
     file: ../secrets/user_credentials.txt
+  portainer_pass:
+    file: ../secrets/portainer_pass.txt
 
 networks:
   inception_network:
@@ -112,3 +127,9 @@ volumes:
       type: none
       o: bind
       device: /home/omizin/data/wordpress
+  portainer_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/omizin/data/portainer

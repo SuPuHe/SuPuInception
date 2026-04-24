@@ -1,0 +1,22 @@
+FROM debian:bookworm-slim
+
+ARG PORTAINER_VERSION=2.21.4
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    ca-certificates \
+    apache2-utils \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL \
+    "https://github.com/portainer/portainer/releases/download/${PORTAINER_VERSION}/portainer-${PORTAINER_VERSION}-linux-amd64.tar.gz" \
+    | tar -xz -C /
+
+COPY tools/setup.sh /setup.sh
+RUN chmod +x /setup.sh
+
+RUN mkdir -p /data
+
+EXPOSE 9000 
+
+ENTRYPOINT ["/setup.sh"]
