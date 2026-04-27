@@ -11,7 +11,7 @@ services:
       - CERT_PATH=${CERT_PATH}
       - KEY_PATH=${KEY_PATH}
     ports:
-      - "443:443"
+      - "${NGINX_HTTPS_PORT}:443"
     networks:
       - inception_network
     volumes:
@@ -76,8 +76,8 @@ services:
       - user_credentials
       - credentials
     ports:
-      - "21:21"
-      - "21100-21110:21100-21110"
+      - "${FTP_PORT}:21"
+      - "${FTP_PASSIVE_MIN}-${FTP_PASSIVE_MAX}:21100-21110"
     networks:
       - inception_network
     restart: always
@@ -88,7 +88,7 @@ services:
     container_name: portainer
     restart: always
     ports:
-      - "9000:9000"
+      - "${PORTAINER_PORT}:9000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
@@ -103,7 +103,7 @@ services:
     container_name: static_site
     restart: always
     ports:
-      - "8080:80"
+      - "${STATIC_SITE_PORT}:80"
     networks:
       - inception_network
   adminer:
