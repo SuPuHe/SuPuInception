@@ -106,6 +106,16 @@ services:
       - "8080:80"
     networks:
       - inception_network
+  adminer:
+    build:
+      context: ./requirements/bonus/adminer
+      dockerfile: Dockerfile
+    container_name: adminer
+    restart: always
+    networks:
+      - inception_network
+    depends_on:
+      - mariadb
 
 secrets:
   db_password:
