@@ -96,6 +96,16 @@ services:
       - portainer_pass
     networks:
       - inception_network
+  static_site:
+    build:
+      context: ./requirements/bonus/static_site
+      dockerfile: Dockerfile
+    container_name: static_site
+    restart: always
+    ports:
+      - "8080:80"
+    networks:
+      - inception_network
 
 secrets:
   db_password:
