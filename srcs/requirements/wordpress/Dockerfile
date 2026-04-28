@@ -18,7 +18,11 @@ RUN mkdir -p /run/php
 COPY tools/setup.sh /usr/local/bin/setup.sh
 RUN chmod +x /usr/local/bin/setup.sh
 
-RUN sed -i 's/listen = \/run\/php\/php7.4-fpm.sock/listen = 9000/g' /etc/php/7.4/fpm/pool.d/www.conf
+ARG WORDPRESS_FPM_PORT=9000
+ENV WORDPRESS_FPM_PORT=${WORDPRESS_FPM_PORT}
+RUN sed -i "s|listen = /run/php/php7.4-fpm.sock|listen = ${WORDPRESS_FPM_PORT}|g" /etc/php/7.4/fpm/pool.d/www.conf
+
+EXPOSE ${WORDPRESS_FPM_PORT}
 
 WORKDIR /var/www/wordpress
 

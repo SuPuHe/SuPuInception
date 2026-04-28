@@ -1,6 +1,8 @@
 FROM debian:bookworm-slim
 
 ARG PORTAINER_VERSION=2.21.4
+ARG PORTAINER_PORT
+ENV PORTAINER_PORT=${PORTAINER_PORT}
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
@@ -17,6 +19,6 @@ RUN chmod +x /setup.sh
 
 RUN mkdir -p /data
 
-EXPOSE 9000 
+EXPOSE ${PORTAINER_PORT}
 
 ENTRYPOINT ["/setup.sh"]

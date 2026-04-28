@@ -4,8 +4,12 @@ RUN apt-get update && apt-get install -y nginx && rm -rf /var/lib/apt/lists/*
 
 COPY html/ /var/www/html/
 
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+ARG STATIC_SITE_PORT
+ENV STATIC_SITE_PORT=${STATIC_SITE_PORT}
 
-EXPOSE 80
+EXPOSE ${STATIC_SITE_PORT}
 
-CMD ["nginx"]
+COPY tools/start.sh /start.sh
+RUN chmod +x /start.sh
+
+CMD ["/start.sh"]

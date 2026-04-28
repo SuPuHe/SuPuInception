@@ -15,4 +15,4 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 
 COPY conf/nginx.conf /etc/nginx/conf.d/default.conf.template
 
-CMD ["sh", "-c", "envsubst '${DOMAIN_NAME} ${CERT_PATH} ${KEY_PATH}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "envsubst '${DOMAIN_NAME} ${CERT_PATH} ${KEY_PATH} ${WORDPRESS_FPM_PORT} ${ADMINER_PORT} ${PORTAINER_PORT} ${STATIC_SITE_PORT}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]

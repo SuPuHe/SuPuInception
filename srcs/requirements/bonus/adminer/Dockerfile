@@ -1,7 +1,9 @@
 FROM debian:bookworm-slim
 
+ARG ADMINER_PORT
+ENV ADMINER_PORT=${ADMINER_PORT}
+
 RUN apt-get update && apt-get install -y \
-    php \
     php-fpm \
     php-mysql \
     wget \
@@ -10,13 +12,11 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p /var/www/html && \
     wget "https://www.adminer.org/latest.php" -O /var/www/html/index.php
 
-RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /var/www/html && \
+    mkdir -p /run/php
 
-RUN sed -i 's|listen = /run/php/php8.2-fpm.sock|listen = 9001|g' /etc/php/8.2/fpm/pool.d/www.conf && \
-    sed -i 's|listen.allowed_clients = 127.0.0.1||g' /etc/php/8.2/fpm/pool.d/www.conf
+COPY conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
 
-RUN mkdir -p /run/php
+EXPOSE ${ADMINER_PORT}
 
-EXPOSE 9001
-
-CMD ["php-fpm8.2", "-F"]
+CMD ["sh", "-c", "sed -i \"s/listen = 9001/listen = ${ADMINER_PORT}/g\" /etc/php/8.2/fpm/pool.d/www.conf && php-fpm8.2 -F"]

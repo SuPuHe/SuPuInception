@@ -10,6 +10,10 @@ services:
       - DOMAIN_NAME=${DOMAIN_NAME}
       - CERT_PATH=${CERT_PATH}
       - KEY_PATH=${KEY_PATH}
+      - WORDPRESS_FPM_PORT=${WORDPRESS_FPM_PORT}
+      - ADMINER_PORT=${ADMINER_PORT}
+      - PORTAINER_PORT=${PORTAINER_PORT}
+      - STATIC_SITE_PORT=${STATIC_SITE_PORT}
     ports:
       - "${NGINX_HTTPS_PORT}:443"
     networks:
@@ -21,6 +25,8 @@ services:
     build:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
+      args:
+        WORDPRESS_FPM_PORT: ${WORDPRESS_FPM_PORT}
     container_name: wordpress
     restart: always
     environment:
@@ -30,6 +36,7 @@ services:
       - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
       - WP_USER_EMAIL=${WP_USER_EMAIL}
       - WP_USER_ROLE=${WP_USER_ROLE}
+      - WORDPRESS_FPM_PORT=${WORDPRESS_FPM_PORT}
     secrets:
       - db_password
       - credentials
@@ -85,8 +92,12 @@ services:
     build:
       context: ./requirements/bonus/portainer
       dockerfile: Dockerfile
+      args:
+        PORTAINER_PORT: ${PORTAINER_PORT}
     container_name: portainer
     restart: always
+    environment:
+      - PORTAINER_PORT=${PORTAINER_PORT}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
@@ -98,16 +109,24 @@ services:
     build:
       context: ./requirements/bonus/static_site
       dockerfile: Dockerfile
+      args:
+        STATIC_SITE_PORT: ${STATIC_SITE_PORT}
     container_name: static_site
     restart: always
+    environment:
+      - STATIC_SITE_PORT=${STATIC_SITE_PORT}
     networks:
       - inception_network
   adminer:
     build:
       context: ./requirements/bonus/adminer
       dockerfile: Dockerfile
+      args:
+        ADMINER_PORT: ${ADMINER_PORT}
     container_name: adminer
     restart: always
+    environment:
+      - ADMINER_PORT=${ADMINER_PORT}
     networks:
       - inception_network
     depends_on:

@@ -14,5 +14,5 @@ exec /portainer/portainer \
     --data /data \
     --assets /portainer \
     --admin-password "$HASH" \
-    --bind :9000 \
+    --bind :${PORTAINER_PORT} \
     --no-analytics
