@@ -10,12 +10,12 @@ services:
       - DOMAIN_NAME=${DOMAIN_NAME}
       - CERT_PATH=${CERT_PATH}
       - KEY_PATH=${KEY_PATH}
-      - WORDPRESS_FPM_PORT=${WORDPRESS_FPM_PORT}
-      - ADMINER_PORT=${ADMINER_PORT}
-      - PORTAINER_PORT=${PORTAINER_PORT}
-      - STATIC_SITE_PORT=${STATIC_SITE_PORT}
+      - WORDPRESS_FPM_PORT=${WORDPRESS_FPM_PORT:-9000}
+      - ADMINER_PORT=${ADMINER_PORT:-9001}
+      - PORTAINER_PORT=${PORTAINER_PORT:-9000}
+      - STATIC_SITE_PORT=${STATIC_SITE_PORT:-80}
     ports:
-      - "${NGINX_HTTPS_PORT}:443"
+      - "${NGINX_HTTPS_PORT:-443}:443"
     networks:
       - inception_network
     volumes:
@@ -26,19 +26,19 @@ services:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
       args:
-        WORDPRESS_FPM_PORT: ${WORDPRESS_FPM_PORT}
+        WORDPRESS_FPM_PORT: ${WORDPRESS_FPM_PORT:-9000}
     container_name: wordpress
     restart: always
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
-      - MARIADB_PORT=${MARIADB_PORT}
-      - REDIS_PORT=${REDIS_PORT}
+      - MARIADB_PORT=${MARIADB_PORT:-3306}
+      - REDIS_PORT=${REDIS_PORT:-6379}
       - DOMAIN_NAME=${DOMAIN_NAME}
       - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
       - WP_USER_EMAIL=${WP_USER_EMAIL}
       - WP_USER_ROLE=${WP_USER_ROLE}
-      - WORDPRESS_FPM_PORT=${WORDPRESS_FPM_PORT}
+      - WORDPRESS_FPM_PORT=${WORDPRESS_FPM_PORT:-9000}
     secrets:
       - db_password
       - credentials
@@ -55,13 +55,13 @@ services:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
       args:
-        MARIADB_PORT: ${MARIADB_PORT}
+        MARIADB_PORT: ${MARIADB_PORT:-3306}
     container_name: mariadb
     restart: always
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
-      - MARIADB_PORT=${MARIADB_PORT}
+      - MARIADB_PORT=${MARIADB_PORT:-3306}
     secrets:
       - db_password
       - db_root_password
@@ -74,10 +74,10 @@ services:
       context: ./requirements/bonus/redis
       dockerfile: Dockerfile
       args:
-        REDIS_PORT: ${REDIS_PORT}
+        REDIS_PORT: ${REDIS_PORT:-6379}
     container_name: redis
     environment:
-      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PORT=${REDIS_PORT:-6379}
     networks:
       - inception_network
     restart: always
@@ -92,8 +92,8 @@ services:
       - user_credentials
       - credentials
     ports:
-      - "${FTP_PORT}:21"
-      - "${FTP_PASSIVE_MIN}-${FTP_PASSIVE_MAX}:21100-21110"
+      - "${FTP_PORT:-21}:21"
+      - "${FTP_PASSIVE_MIN:-21100}-${FTP_PASSIVE_MAX:-21110}:21100-21110"
     networks:
       - inception_network
     restart: always
@@ -102,11 +102,11 @@ services:
       context: ./requirements/bonus/portainer
       dockerfile: Dockerfile
       args:
-        PORTAINER_PORT: ${PORTAINER_PORT}
+        PORTAINER_PORT: ${PORTAINER_PORT:-9000}
     container_name: portainer
     restart: always
     environment:
-      - PORTAINER_PORT=${PORTAINER_PORT}
+      - PORTAINER_PORT=${PORTAINER_PORT:-9000}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
@@ -119,11 +119,11 @@ services:
       context: ./requirements/bonus/static_site
       dockerfile: Dockerfile
       args:
-        STATIC_SITE_PORT: ${STATIC_SITE_PORT}
+        STATIC_SITE_PORT: ${STATIC_SITE_PORT:-80}
     container_name: static_site
     restart: always
     environment:
-      - STATIC_SITE_PORT=${STATIC_SITE_PORT}
+      - STATIC_SITE_PORT=${STATIC_SITE_PORT:-80}
     networks:
       - inception_network
   adminer:
@@ -131,11 +131,11 @@ services:
       context: ./requirements/bonus/adminer
       dockerfile: Dockerfile
       args:
-        ADMINER_PORT: ${ADMINER_PORT}
+        ADMINER_PORT: ${ADMINER_PORT:-9001}
     container_name: adminer
     restart: always
     environment:
-      - ADMINER_PORT=${ADMINER_PORT}
+      - ADMINER_PORT=${ADMINER_PORT:-9001}
     networks:
       - inception_network
     depends_on:
