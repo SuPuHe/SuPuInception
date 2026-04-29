@@ -32,6 +32,8 @@ services:
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
+      - MARIADB_PORT=${MARIADB_PORT}
+      - REDIS_PORT=${REDIS_PORT}
       - DOMAIN_NAME=${DOMAIN_NAME}
       - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
       - WP_USER_EMAIL=${WP_USER_EMAIL}
@@ -52,11 +54,14 @@ services:
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
+      args:
+        MARIADB_PORT: ${MARIADB_PORT}
     container_name: mariadb
     restart: always
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
+      - MARIADB_PORT=${MARIADB_PORT}
     secrets:
       - db_password
       - db_root_password
@@ -68,7 +73,11 @@ services:
     build:
       context: ./requirements/bonus/redis
       dockerfile: Dockerfile
+      args:
+        REDIS_PORT: ${REDIS_PORT}
     container_name: redis
+    environment:
+      - REDIS_PORT=${REDIS_PORT}
     networks:
       - inception_network
     restart: always
