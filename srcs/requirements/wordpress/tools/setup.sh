@@ -105,7 +105,5 @@ fi
 
 wp redis enable --allow-root >/dev/null 2>&1 || true
 
-# sed -i "s|listen = /run/php/php7.4-fpm.sock|listen = ${WORDPRESS_FPM_PORT}|g" /etc/php/7.4/fpm/pool.d/www.conf
-
 echo "WordPress is ready. Starting PHP-FPM..."
 exec php-fpm8.2 -F
