@@ -44,4 +44,4 @@ else
 fi
 
 echo "MariaDB is ready. Starting normally..."
-exec mysqld_safe
+exec mariadbd --user=mysql

@@ -1,10 +1,10 @@
-FROM debian:bullseye
+FROM debian:bookworm
 
 RUN apt-get update && apt-get install -y \
-    php7.4-fpm \
-    php7.4-mysql \
+    php8.2-fpm \
+    php-mysql \
     php-redis \
-    netcat \
+    netcat-openbsd \
     mariadb-client \
     curl \
     && rm -rf /var/lib/apt/lists/*
@@ -20,7 +20,7 @@ RUN chmod +x /usr/local/bin/setup.sh
 
 ARG WORDPRESS_FPM_PORT=9000
 ENV WORDPRESS_FPM_PORT=${WORDPRESS_FPM_PORT}
-RUN sed -i "s|listen = /run/php/php7.4-fpm.sock|listen = ${WORDPRESS_FPM_PORT}|g" /etc/php/7.4/fpm/pool.d/www.conf
+RUN sed -i "s|listen = /run/php/php8.2-fpm.sock|listen = ${WORDPRESS_FPM_PORT}|g" /etc/php/8.2/fpm/pool.d/www.conf
 
 EXPOSE ${WORDPRESS_FPM_PORT}
 

@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:bookworm
 
 ARG PORTAINER_VERSION=2.21.4
 ARG PORTAINER_PORT

@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:bookworm
 
 ARG ADMINER_PORT
 ENV ADMINER_PORT=${ADMINER_PORT}
