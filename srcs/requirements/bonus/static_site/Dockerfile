@@ -9,7 +9,7 @@ ENV STATIC_SITE_PORT=${STATIC_SITE_PORT}
 
 EXPOSE ${STATIC_SITE_PORT}
 
-COPY tools/start.sh /start.sh
-RUN chmod +x /start.sh
+COPY tools/setup.sh /setup.sh
+RUN chmod +x /setup.sh
 
-CMD ["/start.sh"]
+CMD ["/setup.sh"]
