@@ -6,11 +6,11 @@ RUN mkdir -p /var/run/mysqld \
     && chown -R mysql:mysql /var/run/mysqld \
     && chmod 777 /var/run/mysqld
 
-COPY conf/50-server.conf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY conf/mariadb.conf /etc/mysql/mariadb.conf.d/mariadb.cnf
 
 ARG MARIADB_PORT=3306
 ENV MARIADB_PORT=${MARIADB_PORT}
-RUN sed -i "s/^port = 3306/port = ${MARIADB_PORT}/" /etc/mysql/mariadb.conf.d/50-server.cnf
+RUN sed -i "s/^port = 3306/port = ${MARIADB_PORT}/" /etc/mysql/mariadb.conf.d/mariadb.cnf
 
 COPY tools/setup.sh /usr/local/bin/setup.sh
 RUN chmod +x /usr/local/bin/setup.sh
