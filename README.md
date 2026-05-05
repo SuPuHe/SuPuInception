@@ -1,8 +1,6 @@
+*This project has been created as part of the 42 curriculum by omizin.*
+
 # Inception
-
-*This project has been created as part of the 42 curriculum by [omizin].*
-
----
 
 ## 1. Description
 The **Inception** project is a major milestone in the 42 Network System Administration branch. The goal is to broaden personal knowledge by using **Docker** to virtualize a complete infrastructure. 
